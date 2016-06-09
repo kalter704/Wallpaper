@@ -117,6 +117,10 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumHeight()), Toast.LENGTH_SHORT).show();
 
                 /*
+                img.startAnimation(animRotate);
+                linImg.setVisibility(View.VISIBLE);
+                */
+                /*
                 wallpaperManager.suggestDesiredDimensions(720, 1280);
 
                 Context context = getApplicationContext();
@@ -216,9 +220,12 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
         } else {
-
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
             bitmap = Bitmap.createScaledBitmap(bitmap, dispayWidth, wallpaperManager.getDesiredMinimumHeight(), true);
+
+            //wallpaperManager.setWallpaperOffsetSteps(1, 1);
+            //wallpaperManager.suggestDesiredDimensions(dispayWidth, dispayHeight);
+
             try {
                 wallpaperManager.setBitmap(bitmap);
             } catch (IOException e) {
