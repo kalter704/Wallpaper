@@ -53,6 +53,15 @@ public class DisplayInfo {
             default:
                 tempYdpi = -2;
         }
+        /*
+        if(tempXdpi != -1) {
+            return true;
+        } else if(tempYdpi != -2) {
+            return true;
+        } else {
+            return false;
+        }
+        */
         if(tempXdpi == tempYdpi) {
             return true;
         } else {
