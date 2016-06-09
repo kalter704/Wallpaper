@@ -8,10 +8,13 @@ import android.util.DisplayMetrics;
 public class DisplayInfo {
     public static final int WIDTH_MEDIUM = 360;
     public static final int HEIGHT_MEDIUM = 640;
+
     public static final int WIDTH_HIGH = 540;
     public static final int HEIGHT_HIGH = 960;
+
     public static final int WIDTH_XHIGH = 720;
     public static final int HEIGHT_XHIGH = 1280;
+
     public static final int WIDTH_XXHIGH = 1080;
     public static final int HEIGHT_XXHIGH = 1920;
 
@@ -31,20 +34,24 @@ public class DisplayInfo {
             case WIDTH_XXHIGH:
                 tempXdpi = DisplayMetrics.DENSITY_XXHIGH;
                 break;
+            default:
+                tempXdpi = -1;
         }
         switch(height) {
             case HEIGHT_MEDIUM:
-                tempXdpi = DisplayMetrics.DENSITY_MEDIUM;
+                tempYdpi = DisplayMetrics.DENSITY_MEDIUM;
                 break;
             case HEIGHT_HIGH:
-                tempXdpi = DisplayMetrics.DENSITY_HIGH;
+                tempYdpi = DisplayMetrics.DENSITY_HIGH;
                 break;
             case HEIGHT_XHIGH:
-                tempXdpi = DisplayMetrics.DENSITY_XHIGH;
+                tempYdpi = DisplayMetrics.DENSITY_XHIGH;
                 break;
             case HEIGHT_XXHIGH:
-                tempXdpi = DisplayMetrics.DENSITY_XXHIGH;
+                tempYdpi = DisplayMetrics.DENSITY_XXHIGH;
                 break;
+            default:
+                tempYdpi = -2;
         }
         if(tempXdpi == tempYdpi) {
             return true;

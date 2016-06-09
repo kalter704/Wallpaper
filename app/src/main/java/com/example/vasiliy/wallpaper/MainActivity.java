@@ -1,10 +1,11 @@
 package com.example.vasiliy.wallpaper;
 
-import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,39 +14,136 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.vasiliy.wallpaper.GIFdecode.GifRun;
 
 import java.io.IOException;
 
 public class MainActivity extends FragmentActivity {
 
+    Button btnSetWallPaper;
+    ImageButton btnExit;
+
     ViewPager pager;
     PagerAdapter pagerAdapter;
+
+    LinearLayout linImg;
+    ImageView img;
+    Animation animRotate;
+    Animation animAlphaVilible;
+    Animation animAlphaInvilible;
+
+    float additionalWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ((Button) findViewById(R.id.btnSetWallpaper)).setOnClickListener(new View.OnClickListener() {
+        linImg = (LinearLayout) findViewById(R.id.linImg);
+        img = (ImageView) findViewById(R.id.imageView);
+        animRotate = AnimationUtils.loadAnimation(this, R.anim.rotation_proccess);
+        animAlphaVilible = AnimationUtils.loadAnimation(this, R.anim.alpha_vilible);
+        animAlphaInvilible = AnimationUtils.loadAnimation(this, R.anim.alpha_invilible);
+
+        animAlphaVilible.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onClick(View v) {
-                setWallpaperToBackground();
+            public void onAnimationStart(Animation animation) {
+                img.startAnimation(animRotate);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                linImg.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
             }
         });
 
-        ((ImageButton) findViewById(R.id.btnExitFromMyApp)).setOnClickListener(new View.OnClickListener() {
+        animAlphaInvilible.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                linImg.setVisibility(View.INVISIBLE);
+                img.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        //img.startAnimation(animation);
+
+        /*
+
+
+        SurfaceView v = (SurfaceView) findViewById(R.id.surfaceView);
+        GifRun w = new GifRun();
+        w.LoadGiff(v, this, R.drawable.proc123);
+*/
+
+        /*
+        additionalWidth = 0;
+
+        ((Button) findViewById(R.id.btnFix)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                additionalWidth = 0;
+
+                linImg.startAnimation(animAlphaVilible);
+            }
+        });
+
+        ((Button) findViewById(R.id.btnFluid1)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                additionalWidth = (float) 0.1;
+                //img.clearAnimation();
+                linImg.startAnimation(animAlphaInvilible);
+            }
+        });
+
+        ((Button) findViewById(R.id.btnFluid2)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                additionalWidth = (float) 0.4;
+            }
+        });
+        */
+
+        btnSetWallPaper = (Button) findViewById(R.id.btnSetWallpaper);
+        btnSetWallPaper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //setWallpaperToBackground();
+                (new setWallpaperAsyncTask()).execute();
+            }
+        });
+
+        btnExit = (ImageButton) findViewById(R.id.btnExitFromMyApp);
+        btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -76,60 +174,49 @@ public class MainActivity extends FragmentActivity {
     }
 
     void setWallpaperToBackground() {
+
+        WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
+
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int dispayWidth = metrics.widthPixels;
         int dispayHeight = metrics.heightPixels;
 
-        WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-        wallpaperManager.suggestDesiredDimensions(dispayWidth, dispayHeight);
-        if(DisplayInfo.isCorrespondsToTheDensityResolution(dispayWidth, dispayHeight)) {
-            Bitmap tempbitMap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
-            Bitmap bitmap = Bitmap.createScaledBitmap(tempbitMap, dispayWidth, dispayHeight, true);
+        Log.d("QWERTY", String.valueOf(dispayWidth));
+        Log.d("QWERTY", String.valueOf(dispayHeight));
+
+        //Toast.makeText(getApplicationContext(), String.valueOf(dispayWidth) + " " + String.valueOf(dispayHeight), Toast.LENGTH_LONG).show();
+
+        //wallpaperManager.suggestDesiredDimensions(dispayWidth, dispayHeight);
+
+
+       if(!DisplayInfo.isCorrespondsToTheDensityResolution(dispayWidth, dispayHeight)) {
+           try {
+               wallpaperManager.setResource(Wallpapers.images[pager.getCurrentItem()]);
+
+
+
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       } else {
+
+
+           Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
+           bitmap = Bitmap.createScaledBitmap(bitmap, dispayWidth, dispayHeight, true);
+           //Toast.makeText(getApplicationContext(), "FALSE", Toast.LENGTH_LONG).show();
+
             try {
                 wallpaperManager.setBitmap(bitmap);
 
-                Context context = getApplicationContext();
-                CharSequence text = "Обои успешно установлены!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            /*
-            Context context = getApplicationContext();
-            CharSequence text = "TRUE";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            */
-        } else {
-            try {
-                wallpaperManager.setResource(Wallpapers.images[pager.getCurrentItem()]);
 
-                Context context = getApplicationContext();
-                CharSequence text = "Обои успешно установлены!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+       }
 
-            /*
-            Context context = getApplicationContext();
-            CharSequence text = "FALSE";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            */
-        }
+
     }
 
     private class MyFragmentPageAdapter extends FragmentPagerAdapter {
@@ -170,5 +257,57 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
+
+    private class setWallpaperAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            buttonSetEnabled(btnExit, false);
+            buttonSetEnabled(btnSetWallPaper, false);
+            linImg.startAnimation(animAlphaVilible);
+        }
+
+        @Override
+        protected void onPostExecute(Void param) {
+            super.onPostExecute(param);
+
+            buttonSetEnabled(btnExit, true);
+            buttonSetEnabled(btnSetWallPaper, true);
+            linImg.startAnimation(animAlphaInvilible);
+
+            Context context = getApplicationContext();
+            CharSequence text = "Обои успешно установлены!";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... param) {
+            setWallpaperToBackground();
+            return null;
+        }
+    }
+
+    void buttonSetEnabled(View view, boolean enabled) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            if(enabled == true) {
+                view.setAlpha((float) 1.0);
+            } else {
+                view.setAlpha((float) 0.5);
+            }
+        }
+        view.setEnabled(enabled);
+        /*
+        if(enabled == true) {
+            view.setTextColor(getResources().getColor(R.color.colorWhite));
+        } else {
+            view.setTextColor(getResources().getColor(R.color.colorGrey));
+        }
+        */
+    }
+
 }
 
