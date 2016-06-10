@@ -223,8 +223,8 @@ public class MainActivity extends FragmentActivity {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
             bitmap = Bitmap.createScaledBitmap(bitmap, dispayWidth, wallpaperManager.getDesiredMinimumHeight(), true);
 
-            //wallpaperManager.setWallpaperOffsetSteps(1, 1);
-            //wallpaperManager.suggestDesiredDimensions(dispayWidth, dispayHeight);
+            wallpaperManager.setWallpaperOffsetSteps(1, 1);
+            wallpaperManager.suggestDesiredDimensions(dispayWidth, wallpaperManager.getDesiredMinimumHeight());
 
             try {
                 wallpaperManager.setBitmap(bitmap);
