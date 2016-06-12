@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Wallpaper</string>
+
+    <string name="banner_ad_unit_id">ca-app-pub-9590734892113562/7050212534</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-9590734892113562/8526945730</string>
+
 </resources>

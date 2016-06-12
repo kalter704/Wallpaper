@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,14 +25,26 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="70dp"
         android:background="@drawable/btn_bg"
+        android:enabled="true"
         android:paddingBottom="13dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="13dp"
         android:text="Установить"
         android:textColor="@color/colorWhite"
-        android:textStyle="normal"
-        android:enabled="true" />
+        android:textStyle="normal" />
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="right|center_vertical"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
+
 
     <ImageButton
         android:id="@+id/btnExitFromMyApp"
@@ -71,22 +84,24 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/linImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/linImg"
         android:layout_marginTop="70dp"
+        android:orientation="vertical"
         android:visibility="invisible">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:id="@+id/imageView"
             android:src="@drawable/rotating_arrow_1"
             android:visibility="invisible" />
 
     </LinearLayout>
+
+
 
 
 </FrameLayout>

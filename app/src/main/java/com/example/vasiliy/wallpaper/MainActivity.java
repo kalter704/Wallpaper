@@ -15,8 +15,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -24,6 +26,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.io.IOException;
 
@@ -46,7 +52,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //IBinder iBinder
+
 
         linImg = (LinearLayout) findViewById(R.id.linImg);
         img = (ImageView) findViewById(R.id.imageView);
@@ -116,10 +122,9 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumWidth()), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumHeight()), Toast.LENGTH_SHORT).show();
 
-                /*
                 img.startAnimation(animRotate);
                 linImg.setVisibility(View.VISIBLE);
-                */
+
                 /*
                 wallpaperManager.suggestDesiredDimensions(720, 1280);
 
@@ -200,6 +205,18 @@ public class MainActivity extends FragmentActivity {
             }
         });
 
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-9590734892113562~4096746136");
+
+        //AdRequest.Builder.addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        /*
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
+                .build();
+                */
+        mAdView.loadAd(adRequest);
     }
 
     void setWallpaperToBackground() {
