@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Wallpaper</string>
 
+    <string name="id_app_in_admob" translatable="false">ca-app-pub-9590734892113562~4096746136</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9590734892113562/7050212534</string>
     <string name="interstitial_ad_unit_id" translatable="false">ca-app-pub-9590734892113562/8526945730</string>
     

@@ -236,7 +236,7 @@ public class MainActivity extends FragmentActivity {
         });
 
 
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-9590734892113562~4096746136");
+        MobileAds.initialize(getApplicationContext(), getResources().getString(R.string.id_app_in_admob));
 
         AdView adView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = getRequestForAds();
