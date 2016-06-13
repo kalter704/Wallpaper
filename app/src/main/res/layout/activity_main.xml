@@ -41,11 +41,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="right|center_vertical"
+        android:layout_gravity="center_horizontal|top"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id"></com.google.android.gms.ads.AdView>
 
-
+<!--
     <ImageButton
         android:id="@+id/btnExitFromMyApp"
         android:layout_width="wrap_content"
@@ -56,14 +56,15 @@
         android:background="@drawable/btn_bg"
         android:padding="10dp"
         android:src="@drawable/btn_close" />
-
+-->
+    <!--
     <Button
         android:id="@+id/btnFix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left|top"
         android:text="New Button" />
-
+-->
     <!--
     <Button
         android:id="@+id/btnFluid2"
@@ -100,8 +101,6 @@
             android:visibility="invisible" />
 
     </LinearLayout>
-
-
 
 
 </FrameLayout>

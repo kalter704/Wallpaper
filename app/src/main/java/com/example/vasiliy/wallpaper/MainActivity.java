@@ -15,10 +15,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -27,13 +25,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import java.io.IOException;
 
 public class MainActivity extends FragmentActivity {
+
+    int countOfSwipedPages;
+    int numberOfSwipedPages;
+    boolean isShowFullscreenAds;
+
+    InterstitialAd mInterstitialAd;
+    AdRequest intersAdRequest;
 
     Button btnSetWallPaper;
     ImageButton btnExit;
@@ -52,7 +59,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        countOfSwipedPages = 0;
+        numberOfSwipedPages = Wallpapers.images.length - 1;
+        isShowFullscreenAds = false;
 
         linImg = (LinearLayout) findViewById(R.id.linImg);
         img = (ImageView) findViewById(R.id.imageView);
@@ -105,7 +114,7 @@ public class MainActivity extends FragmentActivity {
         w.LoadGiff(v, this, R.drawable.proc123);
 */
 
-
+/*
         ((Button) findViewById(R.id.btnFix)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,17 +123,26 @@ public class MainActivity extends FragmentActivity {
                 getWindowManager().getDefaultDisplay().getMetrics(metrics);
                 int dispayWidth = metrics.widthPixels;
                 int dispayHeight = metrics.heightPixels;
-
-                //wallpaperManager.clearWallpaperOffsets(getWindow().getDecorView().getRootView().getWindowToken());
+*/
+                /*
                 Toast.makeText(getApplicationContext(), String.valueOf(dispayWidth), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(dispayHeight), Toast.LENGTH_SHORT).show();
 
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumWidth()), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumHeight()), Toast.LENGTH_SHORT).show();
+                */
 
+                /*
                 img.startAnimation(animRotate);
                 linImg.setVisibility(View.VISIBLE);
-
+                */
+/*
+                if (mInterstitialAd.isLoaded()) {
+                    mInterstitialAd.show();
+                } else {
+                    requestNewInterstitial();
+                }
+*/
                 /*
                 wallpaperManager.suggestDesiredDimensions(720, 1280);
 
@@ -146,8 +164,10 @@ public class MainActivity extends FragmentActivity {
                 wallpaperManager.setWallpaperOffsetSteps(0, (float) 0.33);
                 wallpaperManager.setWallpaperOffsets(getWindow().getDecorView().getRootView().getWindowToken(), (float) 0.8, (float) 0.8);
                 */
+        /*
             }
         });
+        */
 
         /*
         ((Button) findViewById(R.id.btnFluid1)).setOnClickListener(new View.OnClickListener() {
@@ -171,11 +191,10 @@ public class MainActivity extends FragmentActivity {
         btnSetWallPaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setWallpaperToBackground();
                 (new setWallpaperAsyncTask()).execute();
             }
         });
-
+/*
         btnExit = (ImageButton) findViewById(R.id.btnExitFromMyApp);
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +202,7 @@ public class MainActivity extends FragmentActivity {
                 finish();
             }
         });
-
+*/
         pager = (ViewPager) findViewById(R.id.viewPager);
         pagerAdapter = new MyFragmentPageAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
@@ -191,32 +210,60 @@ public class MainActivity extends FragmentActivity {
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
-
             }
 
             @Override
             public void onPageSelected(int i) {
-
+                if (isShowFullscreenAds) {
+                    isShowFullscreenAds = false;
+                    countOfSwipedPages = 0;
+                    mInterstitialAd.show();
+                }
+                if (countOfSwipedPages != numberOfSwipedPages) {
+                    countOfSwipedPages++;
+                } else {
+                    requestNewInterstitial();
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
+
         });
 
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-9590734892113562~4096746136");
 
-        //AdRequest.Builder.addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        /*
-        AdRequest adRequest = new AdRequest.Builder()
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = getRequestForAds();
+        adView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitial_ad_unit_id));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                isShowFullscreenAds = true;
+            }
+        });
+
+    }
+
+    private void requestNewInterstitial() {
+        intersAdRequest = getRequestForAds();
+        mInterstitialAd.loadAd(intersAdRequest);
+    }
+
+    private AdRequest getRequestForAds() {
+        //intersAdRequest = new AdRequest.Builder().build();
+        // Highscreen ICE 2
+        return new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
                 .build();
-                */
-        mAdView.loadAd(adRequest);
     }
 
     void setWallpaperToBackground() {
@@ -255,11 +302,9 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-
     private class MyFragmentPageAdapter extends FragmentPagerAdapter {
 
         private int[] images = Wallpapers.images;
-
         private int imagesCount = images.length;
 
         public MyFragmentPageAdapter(FragmentManager fm) {
@@ -300,7 +345,7 @@ public class MainActivity extends FragmentActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            buttonSetEnabled(btnExit, false);
+            //buttonSetEnabled(btnExit, false);
             buttonSetEnabled(btnSetWallPaper, false);
             linImg.startAnimation(animAlphaVilible);
         }
@@ -309,7 +354,7 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(Void param) {
             super.onPostExecute(param);
 
-            buttonSetEnabled(btnExit, true);
+            //buttonSetEnabled(btnExit, true);
             buttonSetEnabled(btnSetWallPaper, true);
             linImg.startAnimation(animAlphaInvilible);
 
