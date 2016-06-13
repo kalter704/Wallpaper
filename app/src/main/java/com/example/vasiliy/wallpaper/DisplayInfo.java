@@ -2,9 +2,6 @@ package com.example.vasiliy.wallpaper;
 
 import android.util.DisplayMetrics;
 
-/**
- * Created by vasiliy on 05.06.16.
- */
 public class DisplayInfo {
     public static final int WIDTH_MEDIUM = 360;
     public static final int HEIGHT_MEDIUM = 640;

@@ -1,8 +1,5 @@
 package com.example.vasiliy.wallpaper;
 
-/**
- * Created by vasiliy on 05.06.16.
- */
 public class Wallpapers {
 
     public static int[] images = {

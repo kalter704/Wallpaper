@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-/**
- * Created by vasiliy on 05.06.16.
- */
 public class PageFragment extends Fragment {
 
     static final String ARGUMENT_IMAGE_ID = "arg_image_id";

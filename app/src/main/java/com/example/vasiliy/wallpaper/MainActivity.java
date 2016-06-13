@@ -271,7 +271,6 @@ public class MainActivity extends FragmentActivity {
 
 
         // Highscreen ICE 2
-
         /*
         return new AdRequest.Builder()
                 .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
