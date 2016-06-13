@@ -38,6 +38,7 @@ public class MainActivity extends FragmentActivity {
     int countOfSwipedPages;
     int numberOfSwipedPages;
     boolean isShowFullscreenAds;
+    boolean isDoNewRequestForInterstitial;
 
     InterstitialAd mInterstitialAd;
     AdRequest intersAdRequest;
@@ -62,6 +63,7 @@ public class MainActivity extends FragmentActivity {
         countOfSwipedPages = 0;
         numberOfSwipedPages = Wallpapers.images.length - 1;
         isShowFullscreenAds = false;
+        isDoNewRequestForInterstitial = false;
 
         linImg = (LinearLayout) findViewById(R.id.linImg);
         img = (ImageView) findViewById(R.id.imageView);
@@ -219,9 +221,10 @@ public class MainActivity extends FragmentActivity {
                     countOfSwipedPages = 0;
                     mInterstitialAd.show();
                 }
-                if (countOfSwipedPages != numberOfSwipedPages) {
+                if (countOfSwipedPages < numberOfSwipedPages) {
                     countOfSwipedPages++;
                 } else {
+                    countOfSwipedPages = 0;
                     requestNewInterstitial();
                 }
             }
@@ -258,12 +261,35 @@ public class MainActivity extends FragmentActivity {
     }
 
     private AdRequest getRequestForAds() {
-        //intersAdRequest = new AdRequest.Builder().build();
-        // Highscreen ICE 2
+        intersAdRequest = new AdRequest.Builder().build();
+        // EMULATOR
+        /*
         return new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
                 .build();
+                */
+
+        // Highscreen ICE 2
+
+        return new AdRequest.Builder()
+                .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
+                .build();
+
+
+        // HUAWEI
+        /*
+        return new AdRequest.Builder()
+                .addTestDevice("5A43B1E3FEA266FCDB1E781CF0903804")
+                .build();
+                */
+
+        // ASUS
+        /*
+        return new AdRequest.Builder()
+                .addTestDevice("3D7BF0D7FAA1EEBFFA72EA203BF60414")
+                .build();
+                */
     }
 
     void setWallpaperToBackground() {
