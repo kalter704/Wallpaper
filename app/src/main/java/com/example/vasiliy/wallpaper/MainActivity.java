@@ -125,14 +125,14 @@ public class MainActivity extends FragmentActivity {
                 getWindowManager().getDefaultDisplay().getMetrics(metrics);
                 int dispayWidth = metrics.widthPixels;
                 int dispayHeight = metrics.heightPixels;
-*/
-                /*
+
+
                 Toast.makeText(getApplicationContext(), String.valueOf(dispayWidth), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(dispayHeight), Toast.LENGTH_SHORT).show();
 
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumWidth()), Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(), String.valueOf(wallpaperManager.getDesiredMinimumHeight()), Toast.LENGTH_SHORT).show();
-                */
+*/
 
                 /*
                 img.startAnimation(animRotate);
@@ -166,10 +166,11 @@ public class MainActivity extends FragmentActivity {
                 wallpaperManager.setWallpaperOffsetSteps(0, (float) 0.33);
                 wallpaperManager.setWallpaperOffsets(getWindow().getDecorView().getRootView().getWindowToken(), (float) 0.8, (float) 0.8);
                 */
-        /*
+/*
             }
         });
         */
+
 
         /*
         ((Button) findViewById(R.id.btnFluid1)).setOnClickListener(new View.OnClickListener() {
@@ -303,6 +304,9 @@ public class MainActivity extends FragmentActivity {
         Log.d("QWERTY", String.valueOf(dispayWidth));
         Log.d("QWERTY", String.valueOf(dispayHeight));
 
+        wallpaperManager.suggestDesiredDimensions(dispayWidth, wallpaperManager.getDesiredMinimumHeight());
+        wallpaperManager.setWallpaperOffsetSteps(1, 1);
+
         if (DisplayInfo.isCorrespondsToTheDensityResolution(dispayWidth, dispayHeight)) {
             try {
                 wallpaperManager.setResource(Wallpapers.images[pager.getCurrentItem()]);
@@ -312,9 +316,6 @@ public class MainActivity extends FragmentActivity {
         } else {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), Wallpapers.images[pager.getCurrentItem()]);
             bitmap = Bitmap.createScaledBitmap(bitmap, dispayWidth, wallpaperManager.getDesiredMinimumHeight(), true);
-
-            wallpaperManager.setWallpaperOffsetSteps(1, 1);
-            wallpaperManager.suggestDesiredDimensions(dispayWidth, wallpaperManager.getDesiredMinimumHeight());
 
             try {
                 wallpaperManager.setBitmap(bitmap);
@@ -385,7 +386,7 @@ public class MainActivity extends FragmentActivity {
             linImg.startAnimation(animAlphaInvilible);
 
             Context context = getApplicationContext();
-            CharSequence text = "Обои успешно установлены!";
+            CharSequence text = getResources().getString(R.string.successful_set_wallpaper);
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.setGravity(Gravity.CENTER, 0, 0);
