@@ -41,7 +41,6 @@ public class MainActivity extends FragmentActivity {
     boolean isDoNewRequestForInterstitial;
 
     InterstitialAd mInterstitialAd;
-    AdRequest intersAdRequest;
 
     Button btnSetWallPaper;
     ImageButton btnExit;
@@ -257,19 +256,18 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void requestNewInterstitial() {
-        intersAdRequest = getRequestForAds();
-        mInterstitialAd.loadAd(intersAdRequest);
+        mInterstitialAd.loadAd(getRequestForAds());
     }
 
     private AdRequest getRequestForAds() {
-        intersAdRequest = new AdRequest.Builder().build();
+        return new AdRequest.Builder().build();
         // EMULATOR
+        /*
         return new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice("3E0DC5B8245C21520131AB58878FDCE7")
                 .build();
-
-
+        */
         // Highscreen ICE 2
         /*
         return new AdRequest.Builder()

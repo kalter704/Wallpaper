@@ -1,11 +1,15 @@
 package com.example.vasiliy.wallpaper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 
 public class PageFragment extends Fragment {
 
@@ -36,6 +40,21 @@ public class PageFragment extends Fragment {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.imgView);
         imageView.setImageResource(imageId);
+
+        /*
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        */
+
+        /*
+        Picasso.with(getContext())
+                .load(imageId)
+                .resize(
+                        getResources().getDisplayMetrics().widthPixels,
+                        getResources().getDisplayMetrics().heightPixels
+                )
+                .into(imageView);
+                */
 
         return view;
 
